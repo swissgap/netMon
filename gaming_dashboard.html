@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 EPIC GAMING DAY - Network Command Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf, #ff006e);
+            background-size: 200% 100%;
+            animation: gradientShift 5s ease infinite;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        h1 {
+            font-size: 3em;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            font-size: 1.2em;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pulse {
+            width: 12px;
+            height: 12px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 212, 255, 0.8);
+            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .icon {
+            font-size: 2em;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: #a0a0a0;
+            font-size: 0.95em;
+        }
+
+        .metric-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .progress-fill.high {
+            background: linear-gradient(90deg, #ff006e, #ff4500);
+        }
+
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .device-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .device-card:hover {
+            border-color: #00d4ff;
+            transform: scale(1.05);
+        }
+
+        .device-card.online {
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+
+        .device-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .device-name {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            color: #a0a0a0;
+        }
+
+        .device-ip {
+            font-size: 0.85em;
+            color: #00d4ff;
+        }
+
+        .device-status {
+            margin-top: 8px;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            display: inline-block;
+        }
+
+        .device-status.active {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+
+        .device-status.idle {
+            background: rgba(255, 255, 255, 0.1);
+            color: #a0a0a0;
+        }
+
+        .chart-container {
+            height: 200px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .alert-box {
+            background: rgba(255, 0, 110, 0.2);
+            border: 2px solid #ff006e;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .alert-box.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #00d4ff;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #a0a0a0;
+            font-size: 0.9em;
+        }
+
+        .network-topology {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            min-height: 400px;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.8); }
+        }
+
+        .glow {
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .update-time {
+            text-align: center;
+            color: #a0a0a0;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 GAMING DAY COMMAND CENTER</h1>
+            <div class="status-bar">
+                <div class="status-indicator">
+                    <div class="pulse"></div>
+                    <span>System Online</span>
+                </div>
+                <div class="status-indicator">
+                    <span id="deviceCount">0 Devices</span>
+                </div>
+                <div class="status-indicator">
+                    <span id="currentTime"></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Stats Grid -->
+        <div class="grid">
+            <!-- 10Gbit Uplink Card -->
+            <div class="card glow">
+                <div class="card-header">
+                    <span class="icon">🌐</span>
+                    <span>10 Gbit/s Internet Uplink</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Aktuelle Auslastung</span>
+                    <span class="metric-value" id="uplinkUsage">0 Mbps</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="uplinkProgress" style="width: 0%">0%</div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="downloadSpeed">0</div>
+                        <div class="stat-label">Mbps ⬇</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="uploadSpeed">0</div>
+                        <div class="stat-label">Mbps ⬆</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="activeConnections">0</div>
+                        <div class="stat-label">Verbindungen</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WLAN Access Points Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="icon">📡</span>
+                    <span>WLAN Access Points</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Gesamte Clients</span>
+                    <span class="metric-value" id="totalClients">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">2.4 GHz Auslastung</span>
+                    <span class="metric-value" id="channel24">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="channel24Progress" style="width: 0%"></div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">5 GHz Auslastung</span>
+                    <span class="metric-value" id="channel5">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="channel5Progress" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Gaming Consoles Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="icon">🎮</span>
+                    <span>Gaming Consoles</span>
+                </div>
+                <div id="consoleStats"></div>
+            </div>
+        </div>
+
+        <!-- Network Devices Overview -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🔌</span>
+                <span>Network Devices</span>
+            </div>
+            <div class="device-grid" id="deviceGrid"></div>
+        </div>
+
+        <div class="update-time">
+            Letzte Aktualisierung: <span id="lastUpdate">--:--:--</span> | 
+            <button onclick="refreshData()" style="background: #00d4ff; border: none; color: #000; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">🔄 Aktualisieren</button>
+        </div>
+    </div>
+
+    <script>
+        let networkData = null;
+        
+        // Device Icons Mapping
+        const deviceIcons = {
+            'router': '🌐',
+            'switch': '🔀',
+            'wlan_ap': '📡',
+            'gaming_console': '🎮',
+            'pc': '💻',
+            'nas': '💾',
+            'unknown': '❓'
+        };
+
+        // Initialize Dashboard
+        async function loadNetworkData() {
+            try {
+                const response = await fetch('network_data.json');
+                networkData = await response.json();
+                updateDashboard();
+            } catch (error) {
+                console.log('Network data wird generiert...');
+                // Fallback zu Demo-Daten
+                generateDemoData();
+            }
+        }
+
+        function generateDemoData() {
+            networkData = {
+                timestamp: new Date().toISOString(),
+                total_devices: 7,
+                devices: {
+                    '192.168.1.1': {
+                        hostname: 'Fritz!Box Router',
+                        type: 'router',
+                        metrics: {
+                            status: 'online',
+                            uplink_bandwidth_mbps: 10000,
+                            uplink_usage_mbps: 3847,
+                            uplink_usage_percent: 38.5,
+                            active_connections: 1247
+                        }
+                    },
+                    '192.168.1.10': {
+                        hostname: 'UniFi AP Pro',
+                        type: 'wlan_ap',
+                        metrics: {
+                            status: 'online',
+                            total_clients: 23,
+                            clients_2ghz: 8,
+                            clients_5ghz: 15,
+                            channel_utilization_2ghz: 45,
+                            channel_utilization_5ghz: 62
+                        }
+                    },
+                    '192.168.1.11': {
+                        hostname: 'UniFi AP Gaming Zone',
+                        type: 'wlan_ap',
+                        metrics: {
+                            status: 'online',
+                            total_clients: 18,
+                            clients_2ghz: 5,
+                            clients_5ghz: 13,
+                            channel_utilization_2ghz: 32,
+                            channel_utilization_5ghz: 58
+                        }
+                    },
+                    '192.168.1.20': {
+                        hostname: 'PlayStation 5',
+                        type: 'gaming_console',
+                        metrics: {
+                            status: 'online',
+                            download_mbps: 650,
+                            upload_mbps: 95,
+                            latency_ms: 8,
+                            gaming_status: 'active'
+                        }
+                    },
+                    '192.168.1.21': {
+                        hostname: 'Xbox Series X',
+                        type: 'gaming_console',
+                        metrics: {
+                            status: 'online',
+                            download_mbps: 580,
+                            upload_mbps: 87,
+                            latency_ms: 12,
+                            gaming_status: 'active'
+                        }
+                    },
+                    '192.168.1.2': {
+                        hostname: 'Core Switch',
+                        type: 'switch',
+                        metrics: { status: 'online' }
+                    },
+                    '192.168.1.50': {
+                        hostname: 'Gaming PC Alpha',
+                        type: 'pc',
+                        metrics: { status: 'online' }
+                    }
+                }
+            };
+            updateDashboard();
+        }
+
+        function updateDashboard() {
+            if (!networkData) return;
+
+            // Update device count
+            document.getElementById('deviceCount').textContent = `${networkData.total_devices} Devices`;
+
+            // Update Uplink Stats
+            let uplinkData = null;
+            let totalWlanClients = 0;
+            let avg24GHz = 0;
+            let avg5GHz = 0;
+            let apCount = 0;
+            let consoleHTML = '';
+
+            Object.entries(networkData.devices).forEach(([ip, device]) => {
+                const metrics = device.metrics;
+
+                // Router/Uplink Data
+                if (device.type === 'router' && metrics.uplink_usage_mbps) {
+                    uplinkData = metrics;
+                    document.getElementById('uplinkUsage').textContent = `${metrics.uplink_usage_mbps.toFixed(0)} Mbps`;
+                    document.getElementById('downloadSpeed').textContent = (metrics.uplink_usage_mbps * 0.7).toFixed(0);
+                    document.getElementById('uploadSpeed').textContent = (metrics.uplink_usage_mbps * 0.3).toFixed(0);
+                    document.getElementById('activeConnections').textContent = metrics.active_connections || 0;
+                    
+                    const percentage = metrics.uplink_usage_percent || 0;
+                    const progressBar = document.getElementById('uplinkProgress');
+                    progressBar.style.width = `${percentage}%`;
+                    progressBar.textContent = `${percentage.toFixed(1)}%`;
+                    progressBar.className = percentage > 70 ? 'progress-fill high' : 'progress-fill';
+                }
+
+                // WLAN AP Data
+                if (device.type === 'wlan_ap') {
+                    totalWlanClients += metrics.total_clients || 0;
+                    avg24GHz += metrics.channel_utilization_2ghz || 0;
+                    avg5GHz += metrics.channel_utilization_5ghz || 0;
+                    apCount++;
+                }
+
+                // Gaming Console Data
+                if (device.type === 'gaming_console') {
+                    consoleHTML += `
+                        <div class="metric">
+                            <span class="metric-label">${device.hostname}</span>
+                            <span class="metric-value">${metrics.latency_ms}ms</span>
+                        </div>
+                        <div style="font-size: 0.85em; color: #a0a0a0; margin: 5px 0;">
+                            ⬇ ${metrics.download_mbps} Mbps | ⬆ ${metrics.upload_mbps} Mbps
+                        </div>
+                    `;
+                }
+            });
+
+            // Update WLAN stats
+            if (apCount > 0) {
+                avg24GHz = avg24GHz / apCount;
+                avg5GHz = avg5GHz / apCount;
+            }
+            
+            document.getElementById('totalClients').textContent = totalWlanClients;
+            document.getElementById('channel24').textContent = `${avg24GHz.toFixed(0)}%`;
+            document.getElementById('channel5').textContent = `${avg5GHz.toFixed(0)}%`;
+            
+            document.getElementById('channel24Progress').style.width = `${avg24GHz}%`;
+            document.getElementById('channel5Progress').style.width = `${avg5GHz}%`;
+            document.getElementById('channel24Progress').className = avg24GHz > 70 ? 'progress-fill high' : 'progress-fill';
+            document.getElementById('channel5Progress').className = avg5GHz > 70 ? 'progress-fill high' : 'progress-fill';
+
+            // Update console stats
+            document.getElementById('consoleStats').innerHTML = consoleHTML || '<p style="color: #a0a0a0;">Keine Gaming Consoles gefunden</p>';
+
+            // Update device grid
+            updateDeviceGrid();
+
+            // Update timestamp
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('de-DE');
+        }
+
+        function updateDeviceGrid() {
+            const grid = document.getElementById('deviceGrid');
+            grid.innerHTML = '';
+
+            Object.entries(networkData.devices).forEach(([ip, device]) => {
+                const icon = deviceIcons[device.type] || '❓';
+                const status = device.metrics.status === 'online' ? 'online' : '';
+                const gamingStatus = device.metrics.gaming_status || '';
+                
+                const card = document.createElement('div');
+                card.className = `device-card ${status}`;
+                card.innerHTML = `
+                    <div class="device-icon">${icon}</div>
+                    <div class="device-name">${device.hostname}</div>
+                    <div class="device-ip">${ip}</div>
+                    ${gamingStatus ? `<div class="device-status ${gamingStatus}">${gamingStatus === 'active' ? 'AKTIV' : 'IDLE'}</div>` : ''}
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toLocaleTimeString('de-DE');
+        }
+
+        function refreshData() {
+            loadNetworkData();
+            
+            // Animate refresh
+            const button = event.target;
+            button.style.transform = 'rotate(360deg)';
+            button.style.transition = 'transform 0.5s';
+            setTimeout(() => {
+                button.style.transform = 'rotate(0deg)';
+            }, 500);
+        }
+
+        // Auto-refresh every 5 seconds
+        setInterval(loadNetworkData, 5000);
+        setInterval(updateClock, 1000);
+
+        // Initial load
+        loadNetworkData();
+        updateClock();
+    </script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+{
+  "timestamp": "2026-01-27T04:49:29.404874",
+  "network_range": "192.168.1.0/24",
+  "total_devices": 7,
+  "devices": {
+    "192.168.1.1": {
+      "hostname": "Fritz!Box Router",
+      "mac": "00:50:56:C0:00:01",
+      "open_ports": [
+        80,
+        443,
+        22
+      ],
+      "vendor": "AVM",
+      "type": "router",
+      "metrics": {
+        "status": "online",
+        "response_time": 2.6,
+        "last_seen": "2026-01-27T04:49:29.404501",
+        "uplink_bandwidth_mbps": 10000,
+        "uplink_usage_mbps": 4088,
+        "uplink_usage_percent": 40.9,
+        "wan_ip": "203.0.113.42",
+        "active_connections": 1247
+      }
+    },
+    "192.168.1.2": {
+      "hostname": "Core Switch",
+      "mac": "00:1A:2B:3C:4D:5E",
+      "open_ports": [
+        80,
+        443,
+        23
+      ],
+      "vendor": "Cisco",
+      "type": "switch",
+      "metrics": {
+        "status": "online",
+        "response_time": 3.4,
+        "last_seen": "2026-01-27T04:49:29.404530"
+      }
+    },
+    "192.168.1.10": {
+      "hostname": "UniFi AP Pro",
+      "mac": "00:27:22:AB:CD:EF",
+      "open_ports": [
+        80,
+        443,
+        22,
+        8443
+      ],
+      "vendor": "Ubiquiti",
+      "type": "wlan_ap",
+      "metrics": {
+        "status": "online",
+        "response_time": 3.3,
+        "last_seen": "2026-01-27T04:49:29.404548",
+        "clients_2ghz": 11,
+        "clients_5ghz": 23,
+        "total_clients": 31,
+        "channel_utilization_2ghz": 53,
+        "channel_utilization_5ghz": 65,
+        "tx_rate_mbps": 1328,
+        "rx_rate_mbps": 798
+      }
+    },
+    "192.168.1.11": {
+      "hostname": "UniFi AP Gaming Zone",
+      "mac": "00:27:22:AB:CD:F0",
+      "open_ports": [
+        80,
+        443,
+        22,
+        8443
+      ],
+      "vendor": "Ubiquiti",
+      "type": "wlan_ap",
+      "metrics": {
+        "status": "online",
+        "response_time": 3.3,
+        "last_seen": "2026-01-27T04:49:29.404569",
+        "clients_2ghz": 11,
+        "clients_5ghz": 23,
+        "total_clients": 26,
+        "channel_utilization_2ghz": 63,
+        "channel_utilization_5ghz": 80,
+        "tx_rate_mbps": 868,
+        "rx_rate_mbps": 738
+      }
+    },
+    "192.168.1.20": {
+      "hostname": "PlayStation 5",
+      "mac": "00:1F:EA:12:34:56",
+      "open_ports": [
+        9100,
+        9103
+      ],
+      "vendor": "Sony",
+      "type": "gaming_console",
+      "metrics": {
+        "status": "online",
+        "response_time": 2.9,
+        "last_seen": "2026-01-27T04:49:29.404588",
+        "download_mbps": 514,
+        "upload_mbps": 109,
+        "latency_ms": 12,
+        "packet_loss": 0.0,
+        "gaming_status": "active"
+      }
+    },
+    "192.168.1.21": {
+      "hostname": "Xbox Series X",
+      "mac": "7C:ED:8D:AB:CD:EF",
+      "open_ports": [
+        3074
+      ],
+      "vendor": "Microsoft",
+      "type": "gaming_console",
+      "metrics": {
+        "status": "online",
+        "response_time": 2.9,
+        "last_seen": "2026-01-27T04:49:29.404606",
+        "download_mbps": 564,
+        "upload_mbps": 109,
+        "latency_ms": 12,
+        "packet_loss": 0.0,
+        "gaming_status": "active"
+      }
+    },
+    "192.168.1.50": {
+      "hostname": "Gaming PC Alpha",
+      "mac": "98:B6:E9:11:22:33",
+      "open_ports": [
+        445,
+        3389
+      ],
+      "vendor": "Intel",
+      "type": "gaming_console",
+      "metrics": {
+        "status": "online",
+        "response_time": 3.1,
+        "last_seen": "2026-01-27T04:49:29.404625",
+        "download_mbps": 516,
+        "upload_mbps": 111,
+        "latency_ms": 9,
+        "packet_loss": 0.0,
+        "gaming_status": "active"
+      }
+    }
+  },
+  "summary": {
+    "by_type": {
+      "router": 1,
+      "switch": 1,
+      "wlan_ap": 2,
+      "gaming_console": 3
+    },
+    "total_wlan_clients": 57,
+    "total_uplink_usage_mbps": 4088
+  }
+}

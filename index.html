@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 EPIC GAMING DAY - Network Command Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf, #ff006e);
+            background-size: 200% 100%;
+            animation: gradientShift 5s ease infinite;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        h1 {
+            font-size: 3em;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            font-size: 1.2em;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pulse {
+            width: 12px;
+            height: 12px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        .pulse.disconnected {
+            background: #ff006e;
+            box-shadow: 0 0 10px #ff006e;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 212, 255, 0.8);
+            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .icon {
+            font-size: 2em;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: #a0a0a0;
+            font-size: 0.95em;
+        }
+
+        .metric-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .progress-fill.high {
+            background: linear-gradient(90deg, #ff006e, #ff4500);
+        }
+
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .device-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .device-card:hover {
+            border-color: #00d4ff;
+            transform: scale(1.05);
+        }
+
+        .device-card.online {
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+
+        .device-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .device-name {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            color: #a0a0a0;
+        }
+
+        .device-ip {
+            font-size: 0.85em;
+            color: #00d4ff;
+        }
+
+        .device-status {
+            margin-top: 8px;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            display: inline-block;
+        }
+
+        .device-status.active {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+
+        .device-status.idle {
+            background: rgba(255, 255, 255, 0.1);
+            color: #a0a0a0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #00d4ff;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #a0a0a0;
+            font-size: 0.9em;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.8); }
+        }
+
+        .glow {
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            background: #00d4ff;
+            border: none;
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: #00a8cc;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .update-info {
+            color: #a0a0a0;
+            font-size: 0.9em;
+        }
+
+        .connection-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .connection-status.connected {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+
+        .connection-status.disconnected {
+            background: rgba(255, 0, 110, 0.2);
+            color: #ff006e;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.5em;
+            color: #a0a0a0;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 GAMING DAY COMMAND CENTER</h1>
+            <div class="status-bar">
+                <div class="status-indicator">
+                    <div class="pulse" id="systemPulse"></div>
+                    <span id="systemStatus">System Online</span>
+                </div>
+                <div class="status-indicator">
+                    <span id="deviceCount">0 Devices</span>
+                </div>
+                <div class="status-indicator">
+                    <span id="currentTime"></span>
+                </div>
+            </div>
+        </header>
+
+        <div id="content">
+            <div class="loading">
+                <div class="spinner">🔄</div>
+                <div>Lade Netzwerk-Daten...</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="manualScan()" id="scanBtn">
+                <span>🔍</span>
+                <span>Jetzt Scannen</span>
+            </button>
+            <span class="connection-status" id="wsStatus">
+                <span class="pulse disconnected"></span>
+                <span>Verbinde...</span>
+            </span>
+            <div class="update-info">
+                Letzte Aktualisierung: <span id="lastUpdate">--:--:--</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ws = null;
+        let networkData = null;
+        let reconnectTimeout = null;
+        
+        const deviceIcons = {
+            'router': '🌐',
+            'switch': '🔀',
+            'wlan_ap': '📡',
+            'gaming_console': '🎮',
+            'pc': '💻',
+            'nas': '💾',
+            'unknown': '❓'
+        };
+
+        // WebSocket Connection
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}`;
+            
+            console.log('Connecting to WebSocket:', wsUrl);
+            
+            try {
+                ws = new WebSocket(wsUrl);
+                
+                ws.onopen = () => {
+                    console.log('✅ WebSocket connected');
+                    updateConnectionStatus(true);
+                    if (reconnectTimeout) {
+                        clearTimeout(reconnectTimeout);
+                        reconnectTimeout = null;
+                    }
+                };
+                
+                ws.onmessage = (event) => {
+                    try {
+                        const message = JSON.parse(event.data);
+                        if (message.type === 'network_update') {
+                            console.log('📊 Received network update');
+                            networkData = message.data;
+                            updateDashboard();
+                        }
+                    } catch (error) {
+                        console.error('Error parsing WebSocket message:', error);
+                    }
+                };
+                
+                ws.onerror = (error) => {
+                    console.error('❌ WebSocket error:', error);
+                    updateConnectionStatus(false);
+                };
+                
+                ws.onclose = () => {
+                    console.log('👋 WebSocket disconnected');
+                    updateConnectionStatus(false);
+                    // Auto-reconnect after 5 seconds
+                    reconnectTimeout = setTimeout(connectWebSocket, 5000);
+                };
+            } catch (error) {
+                console.error('Failed to create WebSocket:', error);
+                // Fallback to HTTP polling
+                startHttpPolling();
+            }
+        }
+
+        // HTTP Polling Fallback
+        function startHttpPolling() {
+            console.log('📡 Using HTTP polling fallback');
+            loadNetworkDataHttp();
+            setInterval(loadNetworkDataHttp, 5000);
+        }
+
+        async function loadNetworkDataHttp() {
+            try {
+                const response = await fetch('/api/network');
+                if (response.ok) {
+                    networkData = await response.json();
+                    updateDashboard();
+                }
+            } catch (error) {
+                console.error('Error loading network data:', error);
+            }
+        }
+
+        function updateConnectionStatus(connected) {
+            const statusElement = document.getElementById('wsStatus');
+            const pulse = statusElement.querySelector('.pulse');
+            
+            if (connected) {
+                statusElement.className = 'connection-status connected';
+                pulse.className = 'pulse';
+                statusElement.querySelector('span:last-child').textContent = 'Live Verbunden';
+            } else {
+                statusElement.className = 'connection-status disconnected';
+                pulse.className = 'pulse disconnected';
+                statusElement.querySelector('span:last-child').textContent = 'Getrennt';
+            }
+        }
+
+        function updateDashboard() {
+            if (!networkData) return;
+
+            document.getElementById('deviceCount').textContent = `${networkData.total_devices} Devices`;
+
+            const content = document.getElementById('content');
+            content.innerHTML = generateDashboardHTML();
+            
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('de-DE');
+        }
+
+        function generateDashboardHTML() {
+            let uplinkData = null;
+            let totalWlanClients = 0;
+            let avg24GHz = 0;
+            let avg5GHz = 0;
+            let apCount = 0;
+            let consoleHTML = '';
+
+            Object.entries(networkData.devices).forEach(([ip, device]) => {
+                const metrics = device.metrics || {};
+
+                if (device.type === 'router' && metrics.uplink_usage_mbps) {
+                    uplinkData = metrics;
+                }
+
+                if (device.type === 'wlan_ap') {
+                    totalWlanClients += metrics.total_clients || 0;
+                    avg24GHz += metrics.channel_utilization_2ghz || 0;
+                    avg5GHz += metrics.channel_utilization_5ghz || 0;
+                    apCount++;
+                }
+
+                if (device.type === 'gaming_console') {
+                    consoleHTML += `
+                        <div class="metric">
+                            <span class="metric-label">${device.hostname}</span>
+                            <span class="metric-value">${metrics.latency_ms}ms</span>
+                        </div>
+                        <div style="font-size: 0.85em; color: #a0a0a0; margin: 5px 0;">
+                            ⬇ ${metrics.download_mbps} Mbps | ⬆ ${metrics.upload_mbps} Mbps
+                        </div>
+                    `;
+                }
+            });
+
+            if (apCount > 0) {
+                avg24GHz = avg24GHz / apCount;
+                avg5GHz = avg5GHz / apCount;
+            }
+
+            return `
+                <div class="grid">
+                    ${uplinkData ? `
+                    <div class="card glow">
+                        <div class="card-header">
+                            <span class="icon">🌐</span>
+                            <span>10 Gbit/s Internet Uplink</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Aktuelle Auslastung</span>
+                            <span class="metric-value">${uplinkData.uplink_usage_mbps.toFixed(0)} Mbps</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill ${uplinkData.uplink_usage_percent > 70 ? 'high' : ''}" 
+                                 style="width: ${uplinkData.uplink_usage_percent}%">
+                                ${uplinkData.uplink_usage_percent.toFixed(1)}%
+                            </div>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-value">${(uplinkData.uplink_usage_mbps * 0.7).toFixed(0)}</div>
+                                <div class="stat-label">Mbps ⬇</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${(uplinkData.uplink_usage_mbps * 0.3).toFixed(0)}</div>
+                                <div class="stat-label">Mbps ⬆</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${uplinkData.active_connections || 0}</div>
+                                <div class="stat-label">Verbindungen</div>
+                            </div>
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    ${apCount > 0 ? `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="icon">📡</span>
+                            <span>WLAN Access Points</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Gesamte Clients</span>
+                            <span class="metric-value">${totalWlanClients}</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">2.4 GHz Auslastung</span>
+                            <span class="metric-value">${avg24GHz.toFixed(0)}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill ${avg24GHz > 70 ? 'high' : ''}" 
+                                 style="width: ${avg24GHz}%"></div>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">5 GHz Auslastung</span>
+                            <span class="metric-value">${avg5GHz.toFixed(0)}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill ${avg5GHz > 70 ? 'high' : ''}" 
+                                 style="width: ${avg5GHz}%"></div>
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    ${consoleHTML ? `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="icon">🎮</span>
+                            <span>Gaming Consoles</span>
+                        </div>
+                        ${consoleHTML}
+                    </div>
+                    ` : ''}
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="icon">🔌</span>
+                        <span>Network Devices</span>
+                    </div>
+                    <div class="device-grid">
+                        ${Object.entries(networkData.devices).map(([ip, device]) => {
+                            const icon = deviceIcons[device.type] || '❓';
+                            const status = device.metrics?.status === 'online' ? 'online' : '';
+                            const gamingStatus = device.metrics?.gaming_status || '';
+                            
+                            return `
+                                <div class="device-card ${status}">
+                                    <div class="device-icon">${icon}</div>
+                                    <div class="device-name">${device.hostname}</div>
+                                    <div class="device-ip">${ip}</div>
+                                    ${gamingStatus ? `<div class="device-status ${gamingStatus}">${gamingStatus === 'active' ? 'AKTIV' : 'IDLE'}</div>` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        async function manualScan() {
+            const btn = document.getElementById('scanBtn');
+            const originalHTML = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner">🔄</span><span>Scanne...</span>';
+            
+            try {
+                const response = await fetch('/api/scan', { method: 'POST' });
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('✅ Scan completed successfully');
+                } else {
+                    console.error('❌ Scan failed:', result.error);
+                    alert('Scan fehlgeschlagen: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error triggering scan:', error);
+                alert('Fehler beim Scan: ' + error.message);
+            } finally {
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHTML;
+                }, 2000);
+            }
+        }
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toLocaleTimeString('de-DE');
+        }
+
+        // Initialize
+        setInterval(updateClock, 1000);
+        updateClock();
+        connectWebSocket();
+    </script>
+</body>
+</html>
