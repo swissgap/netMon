@@ -96,6 +96,28 @@ watcher.on('change', (filepath) => {
 
 // REST API Endpoints
 
+// API Root - Show available endpoints
+app.get('/api', (req, res) => {
+    res.json({
+        name: 'Gaming Day Network Monitor API',
+        version: '1.0.0',
+        endpoints: {
+            'GET /api': 'This help page',
+            'GET /api/network': 'Get all network data',
+            'GET /api/device/:ip': 'Get specific device by IP',
+            'GET /api/stats': 'Get summary statistics',
+            'POST /api/scan': 'Trigger manual scan',
+            'GET /api/health': 'Server health check'
+        },
+        examples: {
+            network: `${req.protocol}://${req.get('host')}/api/network`,
+            device: `${req.protocol}://${req.get('host')}/api/device/192.168.1.1`,
+            stats: `${req.protocol}://${req.get('host')}/api/stats`,
+            health: `${req.protocol}://${req.get('host')}/api/health`
+        }
+    });
+});
+
 // Get current network data
 app.get('/api/network', (req, res) => {
     try {

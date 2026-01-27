@@ -421,87 +421,29 @@
                 networkData = await response.json();
                 updateDashboard();
             } catch (error) {
-                console.log('Network data wird generiert...');
-                // Fallback zu Demo-Daten
-                generateDemoData();
+                console.error('❌ Error loading network data:', error);
+                showError('Could not load network data. Please run scanner first.');
             }
         }
 
-        function generateDemoData() {
-            networkData = {
-                timestamp: new Date().toISOString(),
-                total_devices: 7,
-                devices: {
-                    '192.168.1.1': {
-                        hostname: 'Fritz!Box Router',
-                        type: 'router',
-                        metrics: {
-                            status: 'online',
-                            uplink_bandwidth_mbps: 10000,
-                            uplink_usage_mbps: 3847,
-                            uplink_usage_percent: 38.5,
-                            active_connections: 1247
-                        }
-                    },
-                    '192.168.1.10': {
-                        hostname: 'UniFi AP Pro',
-                        type: 'wlan_ap',
-                        metrics: {
-                            status: 'online',
-                            total_clients: 23,
-                            clients_2ghz: 8,
-                            clients_5ghz: 15,
-                            channel_utilization_2ghz: 45,
-                            channel_utilization_5ghz: 62
-                        }
-                    },
-                    '192.168.1.11': {
-                        hostname: 'UniFi AP Gaming Zone',
-                        type: 'wlan_ap',
-                        metrics: {
-                            status: 'online',
-                            total_clients: 18,
-                            clients_2ghz: 5,
-                            clients_5ghz: 13,
-                            channel_utilization_2ghz: 32,
-                            channel_utilization_5ghz: 58
-                        }
-                    },
-                    '192.168.1.20': {
-                        hostname: 'PlayStation 5',
-                        type: 'gaming_console',
-                        metrics: {
-                            status: 'online',
-                            download_mbps: 650,
-                            upload_mbps: 95,
-                            latency_ms: 8,
-                            gaming_status: 'active'
-                        }
-                    },
-                    '192.168.1.21': {
-                        hostname: 'Xbox Series X',
-                        type: 'gaming_console',
-                        metrics: {
-                            status: 'online',
-                            download_mbps: 580,
-                            upload_mbps: 87,
-                            latency_ms: 12,
-                            gaming_status: 'active'
-                        }
-                    },
-                    '192.168.1.2': {
-                        hostname: 'Core Switch',
-                        type: 'switch',
-                        metrics: { status: 'online' }
-                    },
-                    '192.168.1.50': {
-                        hostname: 'Gaming PC Alpha',
-                        type: 'pc',
-                        metrics: { status: 'online' }
-                    }
-                }
-            };
-            updateDashboard();
+        function showError(message) {
+            const content = document.getElementById('content') || document.body;
+            content.innerHTML = `
+                <div style="text-align: center; padding: 50px; color: #ff006e;">
+                    <h2>❌ ${message}</h2>
+                    <p style="margin-top: 20px;">Run one of these commands:</p>
+                    <pre style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; text-align: left; max-width: 600px; margin: 20px auto;">
+# Option 1: Smart Scanner (recommended)
+npm run scan:smart
+
+# Option 2: Basic Scanner
+npm run scan
+
+# Option 3: Direct Python
+python3 smart_scanner.py
+                    </pre>
+                </div>
+            `;
         }
 
         function updateDashboard() {
