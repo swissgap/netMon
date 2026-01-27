@@ -1,0 +1,131 @@
+{
+  "description": "SNMP Scanner Configuration",
+  "version": "1.0.0",
+  
+  "global_settings": {
+    "default_community": "public",
+    "default_port": 161,
+    "default_timeout": 5,
+    "snmp_version": "2c",
+    "max_walk_results": 100,
+    "enable_full_walk": false
+  },
+  
+  "devices": [
+    {
+      "host": "192.168.1.1",
+      "name": "Main Router",
+      "type": "router",
+      "community": "public",
+      "expected_vendor": "cisco",
+      "monitor_interfaces": ["GigabitEthernet0/0"],
+      "enabled": true,
+      "notes": "10G Uplink Router"
+    },
+    {
+      "host": "192.168.1.2",
+      "name": "Core Switch",
+      "type": "switch",
+      "community": "public",
+      "expected_vendor": "cisco",
+      "enabled": true
+    },
+    {
+      "host": "192.168.1.10",
+      "name": "UniFi AP Pro",
+      "type": "wlan_ap",
+      "community": "public",
+      "expected_vendor": "ubiquiti",
+      "enabled": true,
+      "notes": "Main Gaming Area AP"
+    },
+    {
+      "host": "192.168.1.11",
+      "name": "UniFi AP Gaming Zone",
+      "type": "wlan_ap",
+      "community": "public",
+      "expected_vendor": "ubiquiti",
+      "enabled": true
+    }
+  ],
+  
+  "monitoring_profiles": {
+    "router": {
+      "metrics": [
+        "cpu_usage",
+        "memory_usage",
+        "interface_bandwidth",
+        "uptime"
+      ],
+      "poll_interval": 30,
+      "alert_thresholds": {
+        "cpu_usage": 80,
+        "memory_usage": 85,
+        "interface_bandwidth_percent": 90
+      }
+    },
+    "switch": {
+      "metrics": [
+        "cpu_usage",
+        "memory_usage",
+        "interface_status"
+      ],
+      "poll_interval": 60
+    },
+    "wlan_ap": {
+      "metrics": [
+        "client_count",
+        "channel_utilization",
+        "cpu_usage",
+        "memory_usage"
+      ],
+      "poll_interval": 30,
+      "alert_thresholds": {
+        "channel_utilization_2ghz": 70,
+        "channel_utilization_5ghz": 70,
+        "client_count": 50
+      }
+    }
+  },
+  
+  "special_interfaces": {
+    "description": "Spezielle Interfaces die genau überwacht werden sollen",
+    "uplink_interfaces": [
+      {
+        "device": "192.168.1.1",
+        "interface_name": "GigabitEthernet0/0",
+        "bandwidth_mbps": 10000,
+        "description": "10G Internet Uplink",
+        "alert_threshold_percent": 85
+      }
+    ]
+  },
+  
+  "integration": {
+    "export_to_network_data": true,
+    "update_dashboard": true,
+    "enable_api_endpoint": true
+  },
+  
+  "security": {
+    "snmpv3_enabled": false,
+    "snmpv3_users": [
+      {
+        "username": "admin",
+        "auth_protocol": "SHA",
+        "auth_password": "your_auth_password",
+        "priv_protocol": "AES",
+        "priv_password": "your_priv_password"
+      }
+    ]
+  },
+  
+  "advanced": {
+    "enable_bandwidth_calculation": true,
+    "bandwidth_calculation_interval": 60,
+    "store_historical_data": true,
+    "historical_data_retention_days": 7,
+    "enable_optical_monitoring": false,
+    "enable_power_monitoring": false
+  }
+}
