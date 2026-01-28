@@ -108,7 +108,7 @@ else
         python3 smart_scanner.py
     else
         echo -e "${BLUE}[i]${NC} Generiere Demo-Daten..."
-        python3 network_scanner.py
+        python3 quick_scanner.py
     fi
 fi
 

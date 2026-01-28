@@ -27,7 +27,7 @@ while true; do
     echo -e "${BLUE}[${TIMESTAMP}]${NC} Scan #${SCAN_COUNT} wird gestartet..."
     
     # Führe Scanner aus
-    python3 network_scanner.py > /dev/null 2>&1
+    python3 quick_scanner.py > /dev/null 2>&1
     
     if [ $? -eq 0 ]; then
         # Zähle Geräte

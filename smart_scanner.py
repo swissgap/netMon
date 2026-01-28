@@ -163,10 +163,23 @@ class SmartScanner:
             network = ipaddress.ip_network(self.network_range)
             
             print("⏳ Ping-Sweep läuft (kann 1-2 Min dauern)...")
+            print("   💡 Tipp: Drücke Ctrl+C zum Abbrechen")
+            
             count = 0
+            total = 0
             
             for ip in network.hosts():
                 ip_str = str(ip)
+                total += 1
+                
+                # Progress indicator every 20 IPs
+                if total % 20 == 0:
+                    print(f"   Scanne... {total}/254 IPs ({count} gefunden)", end='\r')
+                
+                # Timeout protection - max 100 IPs to scan
+                if total > 100:
+                    print(f"\n   ⚠️  Scan limitiert auf erste 100 IPs (Performance)")
+                    break
                 
                 if self._is_alive(ip_str):
                     devices[ip_str] = {
@@ -174,9 +187,12 @@ class SmartScanner:
                         'discovery_method': 'ping'
                     }
                     count += 1
-                    if count % 10 == 0:
-                        print(f"   ... {count} Geräte gefunden")
+                    print(f"   ✅ Gefunden: {ip_str} ({count} total)         ")
+            
+            print(f"\n   Scan abgeschlossen: {count} Geräte in {total} IPs")
                 
+        except KeyboardInterrupt:
+            print(f"\n\n⚠️  Scan abgebrochen! {count} Geräte gefunden bis jetzt.")
         except Exception as e:
             print(f"⚠️  Ping-Sweep Error: {e}")
         
@@ -185,13 +201,17 @@ class SmartScanner:
     def _is_alive(self, ip: str, timeout: int = 1) -> bool:
         """Prüft ob Host antwortet"""
         try:
+            # Use faster ping with strict timeout
             result = subprocess.run(
-                ['ping', '-c', '1', '-W', str(timeout), ip],
+                ['ping', '-c', '1', '-W', '1', ip],
                 capture_output=True,
-                timeout=timeout + 1
+                timeout=2,  # Hard timeout after 2 seconds
+                check=False
             )
             return result.returncode == 0
-        except:
+        except subprocess.TimeoutExpired:
+            return False
+        except Exception:
             return False
     
     def _resolve_hostname(self, ip: str) -> str:

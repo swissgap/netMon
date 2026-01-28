@@ -137,17 +137,19 @@ app.get('/api/network', (req, res) => {
 app.post('/api/scan', (req, res) => {
     console.log('🔍 Manual scan triggered...');
     
-    const scanProcess = spawn('python3', ['network_scanner.py']);
+    const scanProcess = spawn('python3', ['quick_scanner.py']);
     
     let output = '';
     let errorOutput = '';
     
     scanProcess.stdout.on('data', (data) => {
         output += data.toString();
+        console.log(data.toString().trim());
     });
     
     scanProcess.stderr.on('data', (data) => {
         errorOutput += data.toString();
+        console.error(data.toString().trim());
     });
     
     scanProcess.on('close', (code) => {
@@ -236,11 +238,20 @@ function startAutoScan() {
 function runScan() {
     console.log('🔍 Running automated scan...');
     
-    const scanProcess = spawn('python3', ['network_scanner.py']);
+    const scanProcess = spawn('python3', ['quick_scanner.py']);
+    
+    scanProcess.stdout.on('data', (data) => {
+        console.log(data.toString().trim());
+    });
+    
+    scanProcess.stderr.on('data', (data) => {
+        console.error(data.toString().trim());
+    });
     
     scanProcess.on('close', (code) => {
         if (code === 0) {
             console.log('✅ Auto-scan completed');
+            sendNetworkData();
         } else {
             console.error('❌ Auto-scan failed');
         }
