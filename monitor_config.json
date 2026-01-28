@@ -1,5 +1,5 @@
 {
-  "network_range": "192.168.1.0/24",
+  "network_range": "auto",
   
   "snmp": {
     "enabled": false,
@@ -10,9 +10,9 @@
   
   "unifi": {
     "enabled": false,
-    "controller_url": "https://192.168.1.10:8443",
-    "username": "admin",
-    "password": "your_password_here",
+    "controller_url": "",
+    "username": "",
+    "password": "",
     "site": "default",
     "verify_ssl": false
   },
@@ -20,47 +20,8 @@
   "mikrotik": {
     "enabled": false,
     "api_port": 8728,
-    "username": "admin",
-    "password": "your_password_here"
-  },
-  
-  "known_devices": {
-    "192.168.1.1": {
-      "type": "router",
-      "hostname": "Main Router",
-      "vendor": "Fritz!Box",
-      "snmp_enabled": false,
-      "snmp_oid_in": "1.3.6.1.2.1.2.2.1.10.1",
-      "snmp_oid_out": "1.3.6.1.2.1.2.2.1.16.1"
-    },
-    "192.168.1.2": {
-      "type": "switch",
-      "hostname": "Core Switch",
-      "vendor": "Cisco",
-      "snmp_enabled": false
-    },
-    "192.168.1.10": {
-      "type": "wlan_ap",
-      "hostname": "UniFi AP Pro",
-      "vendor": "Ubiquiti",
-      "unifi_managed": true
-    },
-    "192.168.1.11": {
-      "type": "wlan_ap",
-      "hostname": "UniFi AP Gaming Zone",
-      "vendor": "Ubiquiti",
-      "unifi_managed": true
-    },
-    "192.168.1.20": {
-      "type": "gaming_console",
-      "hostname": "PlayStation 5",
-      "vendor": "Sony"
-    },
-    "192.168.1.21": {
-      "type": "gaming_console",
-      "hostname": "Xbox Series X",
-      "vendor": "Microsoft"
-    }
+    "username": "",
+    "password": ""
   },
   
   "monitoring": {

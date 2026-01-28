@@ -1,5 +1,5 @@
 {
-  "description": "SNMP Scanner Configuration",
+  "description": "SNMP Scanner Configuration - All devices discovered automatically",
   "version": "1.0.0",
   
   "global_settings": {
@@ -11,43 +11,7 @@
     "enable_full_walk": false
   },
   
-  "devices": [
-    {
-      "host": "192.168.1.1",
-      "name": "Main Router",
-      "type": "router",
-      "community": "public",
-      "expected_vendor": "cisco",
-      "monitor_interfaces": ["GigabitEthernet0/0"],
-      "enabled": true,
-      "notes": "10G Uplink Router"
-    },
-    {
-      "host": "192.168.1.2",
-      "name": "Core Switch",
-      "type": "switch",
-      "community": "public",
-      "expected_vendor": "cisco",
-      "enabled": true
-    },
-    {
-      "host": "192.168.1.10",
-      "name": "UniFi AP Pro",
-      "type": "wlan_ap",
-      "community": "public",
-      "expected_vendor": "ubiquiti",
-      "enabled": true,
-      "notes": "Main Gaming Area AP"
-    },
-    {
-      "host": "192.168.1.11",
-      "name": "UniFi AP Gaming Zone",
-      "type": "wlan_ap",
-      "community": "public",
-      "expected_vendor": "ubiquiti",
-      "enabled": true
-    }
-  ],
+  "devices": [],
   
   "monitoring_profiles": {
     "router": {
@@ -89,16 +53,8 @@
   },
   
   "special_interfaces": {
-    "description": "Spezielle Interfaces die genau überwacht werden sollen",
-    "uplink_interfaces": [
-      {
-        "device": "192.168.1.1",
-        "interface_name": "GigabitEthernet0/0",
-        "bandwidth_mbps": 10000,
-        "description": "10G Internet Uplink",
-        "alert_threshold_percent": 85
-      }
-    ]
+    "description": "Special interfaces to monitor closely - discovered automatically",
+    "uplink_interfaces": []
   },
   
   "integration": {
@@ -109,15 +65,7 @@
   
   "security": {
     "snmpv3_enabled": false,
-    "snmpv3_users": [
-      {
-        "username": "admin",
-        "auth_protocol": "SHA",
-        "auth_password": "your_auth_password",
-        "priv_protocol": "AES",
-        "priv_password": "your_priv_password"
-      }
-    ]
+    "snmpv3_users": []
   },
   
   "advanced": {
