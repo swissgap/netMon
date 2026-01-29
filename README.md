@@ -56,7 +56,7 @@ open http://localhost:3000
 
 ## 📦 Enthaltene Dateien
 
-1. **quick_scanner.py** - Automatischer Netzwerk-Scanner
+1. **ultra_scanner.py** - Automatischer Netzwerk-Scanner
 2. **gaming_dashboard.html** - Episches Monitoring-Dashboard
 3. **network_data.json** - Generierte Netzwerk-Daten
 
@@ -93,7 +93,7 @@ npm run monitor    # Scan + Server starten
 
 ```bash
 # Scanner ausführen
-python3 quick_scanner.py
+python3 ultra_scanner.py
 
 # Dashboard öffnen
 open gaming_dashboard.html
@@ -110,7 +110,7 @@ open gaming_dashboard.html
 4. Manueller Scan: Button im Dashboard oder `POST /api/scan`
 
 ### Standalone:
-1. Scanner ausführen: `python3 quick_scanner.py`
+1. Scanner ausführen: `python3 ultra_scanner.py`
 2. Dashboard öffnen: `gaming_dashboard.html`
 3. Manuelle Aktualisierung im Browser
 
@@ -169,7 +169,7 @@ python3 --version
 
 #### 1. Netzwerk scannen
 ```bash
-python3 quick_scanner.py
+python3 ultra_scanner.py
 ```
 
 Das Script wird:
@@ -190,7 +190,7 @@ firefox gaming_dashboard.html
 ### Anpassung für dein Netzwerk
 
 #### Netzwerkbereich ändern
-In `quick_scanner.py`, Zeile 125:
+In `ultra_scanner.py`, Zeile 125:
 ```python
 scanner = NetworkScanner("192.168.1.0/24")  # Dein Netzwerk hier
 ```
@@ -201,7 +201,7 @@ Die Device-Erkennung basiert auf:
 - **MAC-Adress-Präfixe**: Hersteller-spezifisch
 - **Offene Ports**: Typische Dienste
 
-Editiere die `device_signatures` in `quick_scanner.py` (Zeile 17-52).
+Editiere die `device_signatures` in `ultra_scanner.py` (Zeile 17-52).
 
 ## 🎯 Erweiterte Features
 
@@ -340,7 +340,7 @@ ping 192.168.1.1
 ip addr show
 
 # Root-Rechte für Raw-Sockets
-sudo python3 quick_scanner.py
+sudo python3 ultra_scanner.py
 ```
 
 ## 🎨 Screenshots & Demo

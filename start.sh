@@ -52,11 +52,11 @@ if [ -f "network_data.json" ]; then
             rm -f network_data.json
             
             echo -e "${GREEN}[✓]${NC} Running Smart Scanner..."
-            python3 smart_scanner.py
+            python3 ultra_scanner.py
             
             if [ $? -ne 0 ]; then
                 echo -e "${RED}[✗]${NC} Smart Scanner failed!"
-                echo "Try: sudo python3 smart_scanner.py"
+                echo "Try: sudo python3 ultra_scanner.py"
                 exit 1
             fi
         elif [ "$choice" = "2" ]; then
@@ -64,7 +64,7 @@ if [ -f "network_data.json" ]; then
             rm -f network_data.json
             
             echo -e "${GREEN}[✓]${NC} Running Basic Scanner..."
-            python3 network_scanner_v3.py
+            python3 ultra_scanner.py
             
             if [ $? -ne 0 ]; then
                 echo -e "${RED}[✗]${NC} Scanner failed - no devices found"
@@ -87,7 +87,7 @@ if [ -f "network_data.json" ]; then
             
             if [[ $update_scan =~ ^[Yy]$ ]]; then
                 echo -e "${GREEN}[✓]${NC} Aktualisiere Daten..."
-                python3 smart_scanner.py
+                python3 ultra_scanner.py
             fi
         else
             echo -e "${GREEN}[✓]${NC} Daten sind aktuell (${file_age} Min alt)"
@@ -105,10 +105,10 @@ else
     
     if [ "$scanner_choice" = "1" ]; then
         echo -e "${GREEN}[✓]${NC} Starte Smart Scanner..."
-        python3 smart_scanner.py
+        python3 ultra_scanner.py
     else
         echo -e "${BLUE}[i]${NC} Generiere Demo-Daten..."
-        python3 quick_scanner.py
+        python3 ultra_scanner.py
     fi
 fi
 

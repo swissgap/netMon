@@ -22,7 +22,7 @@ chmod +x setup.sh
 ./setup.sh
 
 # 2. Scanner starten
-python3 quick_scanner.py
+python3 ultra_scanner.py
 
 # 3. Dashboard öffnen
 open gaming_dashboard.html
@@ -77,7 +77,7 @@ SCAN_INTERVAL=60  # 60 Sekunden für normalen Betrieb
 
 ### Netzwerk-Range ändern:
 
-In `quick_scanner.py`, Zeile 125:
+In `ultra_scanner.py`, Zeile 125:
 ```python
 scanner = NetworkScanner("192.168.1.0/24")  # ← Hier anpassen
 ```
@@ -97,7 +97,7 @@ Oder automatisch mit:
 ls -la network_data.json
 
 # Scanner manuell ausführen
-python3 quick_scanner.py
+python3 ultra_scanner.py
 ```
 
 ### Keine Geräte gefunden

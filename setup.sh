@@ -60,7 +60,7 @@ NETWORK_RANGE=${NETWORK_RANGE:-192.168.1.0/24}
 
 # Update Scanner mit Netzwerk-Range
 print_status "Konfiguriere Scanner für $NETWORK_RANGE..."
-sed -i.bak "s|NetworkScanner(.*)|NetworkScanner(\"$NETWORK_RANGE\")|" quick_scanner.py
+sed -i.bak "s|NetworkScanner(.*)|NetworkScanner(\"$NETWORK_RANGE\")|" ultra_scanner.py
 print_success "Scanner konfiguriert"
 
 # Optional: Dependencies installieren
@@ -90,7 +90,7 @@ fi
 # Initialer Scan
 echo ""
 print_status "Führe initialen Netzwerk-Scan durch..."
-python3 quick_scanner.py
+python3 ultra_scanner.py
 
 if [ $? -eq 0 ]; then
     print_success "Scan erfolgreich abgeschlossen"
@@ -110,7 +110,7 @@ echo "📊 Dashboard öffnen:"
 echo "   Browser: Öffne gaming_dashboard.html"
 echo ""
 echo "🔄 Daten aktualisieren:"
-echo "   python3 quick_scanner.py"
+echo "   python3 ultra_scanner.py"
 echo ""
 echo "⚙️  Automatisches Update (alle 30 Sekunden):"
 echo "   ./start_monitoring.sh"

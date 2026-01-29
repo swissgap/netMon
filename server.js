@@ -137,7 +137,7 @@ app.get('/api/network', (req, res) => {
 app.post('/api/scan', (req, res) => {
     console.log('🔍 Manual scan triggered...');
     
-    const scanProcess = spawn('python3', ['quick_scanner.py']);
+    const scanProcess = spawn('python3', ['ultra_scanner.py']);
     
     let output = '';
     let errorOutput = '';
@@ -238,7 +238,7 @@ function startAutoScan() {
 function runScan() {
     console.log('🔍 Running automated scan...');
     
-    const scanProcess = spawn('python3', ['quick_scanner.py']);
+    const scanProcess = spawn('python3', ['ultra_scanner.py']);
     
     scanProcess.stdout.on('data', (data) => {
         console.log(data.toString().trim());
